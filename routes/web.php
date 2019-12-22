@@ -27,3 +27,5 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['auth', 'admin']], function(){
         return view('admin.admin');
     });
 });
+
+Route::get('article', 'ArticlesController@showArticles');
