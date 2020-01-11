@@ -28,4 +28,12 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['auth', 'admin']], function(){
     });
 });
 
-Route::get('article', 'ArticlesController@showArticles');
+Route::get('article', 'ArticlesController@showArticles')->name('articles');
+//Route::group(['prefix'=> 'article', 'middleware'=>['auth']], function(){
+Route::get('article/{id}', 'ArticlesController@singleArticle')->name('show');
+Route::get('article/create', 'ArticlesController@createArticles')->name('createArticle');
+Route::post('article', 'ArticlesController@store');
+Route::get('article/{id}/edit', 'ArticlesController@editArticle')->name('editArticle');
+Route::put('article/{id}', 'ArticlesController@update');
+Route::delete('article/{id}', 'ArticlesController@deleteArticle')->name('deleteArticle');
+//});
