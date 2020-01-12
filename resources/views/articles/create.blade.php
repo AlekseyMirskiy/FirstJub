@@ -3,7 +3,7 @@
 <div class="row">
 
     <div class="container-fluid">
-        include 
+        @include('errors._form_errors')
         <form class="form-group" action="{{ route('store') }}" method="Post" role="form" enctype="multipart/form-data">
             {{csrf_field()}}
 

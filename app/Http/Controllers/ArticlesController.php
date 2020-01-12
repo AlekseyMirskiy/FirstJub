@@ -38,14 +38,15 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        try{
-            $validateArticle = $request->validate([
-                'title'         => 'require|unique:title|max:50|min:2',
-                'description'   => 'require|unique:description|max:250|min:40'
-            ]);
+        $request->validate([
+            'title'         => 'required|unique:articles,title|max:50|min:2',
+            'description'   => 'required|unique:articles,description|max:250|min:5',
+            'user_id'       => 'nullable'
+        ]);
+
+        try{            
             \DB::beginTransaction();
-                $article = Article::create($request->all());
+                $article = Article::create($request);
             \DB::commit();
         } catch(\Exception $e) {
             \DB::rollBack();
