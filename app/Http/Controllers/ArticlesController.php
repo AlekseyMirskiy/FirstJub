@@ -81,9 +81,10 @@ class ArticlesController extends Controller
     {
         try{
             \DB::beginTransaction();
-            $article['title'] = $request->title;
-            $article['description'] = $request->description;
-            $article->save();
+            $article->update($request->all());
+            // $article['title'] = $request->title;
+            // $article['description'] = $request->description;
+            // $article->update();
             \DB::commit();
         }catch(\Exception $e){
             \DB::rollback();
