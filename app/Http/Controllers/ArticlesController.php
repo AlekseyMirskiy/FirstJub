@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\HTTP\Requests\ArticleRequest;
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
 
@@ -31,28 +32,28 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Store article
-     *
-     * @param Request $request
+     * Store
+     * 
+     *  
+     * @param ArticleRequest $request
      * @return void
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title'         => 'required|unique:articles,title|max:50|min:2',
-            'description'   => 'required|unique:articles,description|max:250|min:5',
-            'user_id'       => 'nullable'
-        ]);
-
+    public function store(ArticleRequest $request)
+    {       
         try{            
             \DB::beginTransaction();
-                $article = Article::create($request);
+                // $article = Article::create($request);
+                $article = new Article;
+                $article['title'] = $request->title;
+                $article['description'] = $request->description;
+                $article->save();
             \DB::commit();
         } catch(\Exception $e) {
             \DB::rollBack();
-            return back()->withInput();
+            return back()->withErrors($e->getMessage())->withInput();
 
         }
+        unset($article);
         return redirect()->route('articles');
     }
 
@@ -64,28 +65,42 @@ class ArticlesController extends Controller
      */
     public function editArticle($id)
     {
+        $article = Article::find($id);
 
+        return view('articles.edit_article', compact('article'));
     }
 
     /**
-     * Undocumented function
+     * Update
      *
-     * @param Request $request
-     * @param [type] $id
+     * @param ArticleRequest $request
+     * @param Article $article
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, Article $article)
     {
+        try{
+            \DB::beginTransaction();
+            $article['title'] = $request->title;
+            $article['description'] = $request->description;
+            $article->save();
+            \DB::commit();
+        }catch(\Exception $e){
+            \DB::rollback();
+            return back()->withErrors($e->getMessage())->withInput();
 
+        }
+        unset($article);
+        return redirect()->route('articles');
     }
 
     /**
-     * Undocumented function
+     * Delete
      *
-     * @param [type] $id
+     * @param Article $article
      * @return void
      */
-    public function deleteArticle($id)
+    public function deleteArticle(Article $article)
     {
 
     }
