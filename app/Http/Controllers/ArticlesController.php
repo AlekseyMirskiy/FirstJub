@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\HTTP\Requests\ArticleRequest;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 
 class ArticlesController extends Controller
@@ -28,7 +29,9 @@ class ArticlesController extends Controller
      */
     public function createArticle()
     {
-        return view('articles.create');
+        $categories = Category::all();
+
+        return view('articles.create', compact('categories'));
     }
 
     /**
@@ -46,6 +49,7 @@ class ArticlesController extends Controller
                 $article = new Article;
                 $article['title'] = $request->title;
                 $article['description'] = $request->description;
+                $article->categories->sync();
                 $article->save();
             \DB::commit();
         } catch(\Exception $e) {
@@ -103,6 +107,8 @@ class ArticlesController extends Controller
      */
     public function deleteArticle(Article $article)
     {
+        $article->delete();
 
+        return redirect()->route('articles');
     }
 }
