@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Article;
+use App\User;
 
 class Category extends Model
 {
@@ -15,9 +16,9 @@ class Category extends Model
      *
      * @return void
      */
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(App\User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
