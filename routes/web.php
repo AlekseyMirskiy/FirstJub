@@ -26,11 +26,11 @@ Auth::routes();
 
 Route::get('/main', 'HomeController@index')->name('main');
 
-Route::group(['prefix'=> 'admin', 'middleware'=>['auth', 'admin']],function() {
-    Route::get('admin', function() {
-        return view('admin.admin');
-    });
-});
+// Route::group(['prefix'=> 'admin', 'middleware'=>['auth', 'admin']],function() {
+//     Route::get('admin', function() {
+//         return view('admin.admin');
+//     });
+// });
 
 Route::resource('tests', 'Test');
 
