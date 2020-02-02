@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ArticlesController extends Controller
 {
@@ -46,7 +47,7 @@ class ArticlesController extends Controller
     {
         $categories = Category::all();
 
-        return view('articles.create', compact('categories'));
+        return view('articles.create_article', compact('categories'));
     }
 
     /**
@@ -57,23 +58,29 @@ class ArticlesController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+        // dd($request);
         try{
             \DB::beginTransaction();
                 //$article = Article::create($request);
                 $article = new Article;
                 $article['title'] = $request->title;
                 $article['description'] = $request->description;
+                if($request->has('image')){
+                    $path = $request->file('image')->store('upload/'.$request->user()->id, 'public');
+                    $article['image_path'] = $path;
+                }
                 $article->save();
                 $article->categories()->sync($request->categories);
             \DB::commit();
+            Alert::success('Поздравляем!', 'Статья успешно создана');
         }catch(\Exception $e) {
             \DB::rollBack();
-
-            return back()->withErrors($e->getMessage())->withInput();
+            Alert::error('Не удалось создать', $e->getMessage());
+            return back()->withInput();
         }
         unset($article);
 
-        return redirect()->route('articles');
+        return redirect('articles');
     }
 
     /**
@@ -101,16 +108,23 @@ class ArticlesController extends Controller
     {
         try{
             \DB::beginTransaction();
+                if($request->has('image')){
+                    if(\Storage::disk('public')->exists($article->image_path)) \Storage::disk('public')->delete($article->image_path);                    
+                    $path = $request->file('image')->store('upload/'.$request->user()->id, 'public');
+                    $article['image_path'] = $path;
+                }
                 $article->update($request->all());
                 $article->categories()->sync($request->categories);
             \DB::commit();
-        }catch(\Exception $e){
+            Alert::success('Успешно обновлена', 'Ты молодец');
+            }catch(\Exception $e){
             \DB::rollBack();
-            return back()->withErrors($e->getMessage())->withInput();
+            Alert::error('Не удалось обновить', $e->getMessage());
+            return back()->withInput();
         }
 
         unset($article);
-        return redirect()->route('articles');
+        return redirect('articles');
     }
 
     /**

@@ -9,12 +9,7 @@
             
            @include('articles.parts._form_article')
 
-            <hr>
-
-            <div class="col-md-6">
-                <input type="file" name="image">
-            </div>
-
+            
             <hr>
 
             <button type="submit" class="btn btn-primary">Create</button>

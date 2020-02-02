@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('header')
-    <header class="masthead posts-image">
+    <header class="masthead categories-image">
         <div class="overlay"></div>
         <div class="container">
         <div class="row">
@@ -15,7 +15,11 @@
     </header>
 @endsection
 @section('content')
+
+@auth
 <a class="btn btn-primary" href="{{ route('category.create') }}" role="button">Create category</a>
+@endauth
+
 <h2 class="card-title">Categories</h2>
   @foreach($categories as $category)
   <div class="card text-center" style="width: 18rem;">
@@ -23,6 +27,7 @@
         <h5 class="card-text"><a href="{{route('category.show', $category)}}">{{ $category->title }}</a></h5>
     </div>
     <div class="card-footer">
+      @auth
         <div class="row justify-content-center">
           <a class="btn btn-success" href="{{ route('category.edit', $category) }}" type="button"> Edit <i class="far fa-edit"></i></a>
           <form action="{{ route('category.destroy', $category) }}" method="POST">
@@ -31,7 +36,7 @@
             <button type="submit" class="btn btn-danger"> Delete <i class="far fa-trash-alt"></i></button>
           </form>
         </div>
-      
+      @endauth
     </div>
   </div>
   @endforeach
