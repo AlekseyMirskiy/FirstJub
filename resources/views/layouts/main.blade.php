@@ -21,6 +21,7 @@
 </head>
 
 <body class="pt-0">
+  <!-- SweetAlert -->
   @include('sweetalert::alert')
   <!-- Navigation -->
   @include('layouts._navbar')

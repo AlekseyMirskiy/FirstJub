@@ -75,8 +75,7 @@ class ArticlesController extends Controller
             Alert::success('Поздравляем!', 'Статья успешно создана');
         }catch(\Exception $e) {
             \DB::rollBack();
-            Alert::error('Не удалось создать', $e->getMessage());
-            return back()->withInput();
+            return redirect('createArticle')->with('Error', $e->getMessage())->withInput();
         }
         unset($article);
 

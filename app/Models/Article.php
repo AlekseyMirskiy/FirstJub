@@ -8,7 +8,7 @@ use App\Models\Category;
 class Article extends Model
 {
     protected $table = 'articles';
-    protected $fillable = ['title', 'description', 'image_path', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'description', 'image_path', 'user_id'];
     
     /**
      * Undocumented function

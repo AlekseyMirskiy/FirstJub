@@ -14,6 +14,7 @@
         </div>
     </header>
 @endsection
+
 @section('content')
 
 @auth

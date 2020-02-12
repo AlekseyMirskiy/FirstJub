@@ -1,0 +1,19 @@
+@extends('layouts.main')
+@section('content')
+<div class="row">
+
+    <div class="container-fluid">
+        @include('errors._form_errors')
+        <form class="form-group" action="{{ route('store') }}" method="POST" role="form" enctype="multipart/form-data">
+            {{csrf_field()}}
+
+            @include('articles.parts._form_article')         
+                        
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+    </div>
+
+</div>
+@endsection

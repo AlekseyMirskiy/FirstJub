@@ -61,12 +61,23 @@ class User extends Authenticatable
         return $this->hasMany(Category::class);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function getFullNameAtribute()
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     public function isAdmin()
     {
-        if($this->role ===1) return TRUE;
+        if($this->role ==1) return TRUE;
     }
 }
